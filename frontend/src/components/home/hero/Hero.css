@@ -1,0 +1,22 @@
+.heroCol1{
+    background-image: url("https://www.simplyrecipes.com/thmb/QOLGR_Lv3Nbuf04I1N-PG2Pej2M=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/SMN_Kwanzaa2024_Main05_4000x2700-ce683f51352c419da480525d2fb81cbf.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 93vh; 
+    position: relative;
+}
+.heroText{
+    font-size: 37px;
+    line-height: 1.2em;
+    font-family: "Frank Ruhl Libre", Georgia, serif;
+    color: #222;
+}
+.heroBorder{
+    border: 2px solid #ffd977;
+}
+.feature{
+    position: absolute;
+    top: 3px;
+    left: 43%;
+    background-color: white;
+}
