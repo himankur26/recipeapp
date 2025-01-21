@@ -4,28 +4,27 @@ const uploadFile = require('../cloudinary/Cloudinary')
 module.exports = {
     createRecipe: async (req, res) => {
         try {
-            const recipeImageLocalPath = req.file?.path; // Change from req.files to req.file
-            if (!recipeImageLocalPath) {
-                return res.status(400).json({
-                    message: "Recipe image is required",
-                });
+            console.log("Request Files:", req.files); // Debugging
+    
+            // Ensure files exist
+            if (!req.files || req.files.length === 0) {
+                return res.status(400).json({ message: 'Recipe image is required' });
             }
+    
+            const recipeImageLocalPath = req.files.image[0].path // Use req.files[0]
+            console.log(recipeImageLocalPath,"reeeeeeeeeeeeeeeeeeeeeeeee")
             console.log(recipeImageLocalPath, "Image is being uploaded");
+    
             const recipeImage = await uploadFile(recipeImageLocalPath);
             if (!recipeImage) {
-                return res.status(500).json({
-                    message: "Failed to upload to Cloudinary",
-                });
+                return res.status(500).json({ message: 'Failed to upload image to Cloudinary' });
             }
-            const { title, ingredients, instructions, prepTime, createdBy } = req.body;
-            const image = recipeImage.url;
+    
             const recipe = await db.create({
-                title,
-                ingredients,
-                instructions,
-                prepTime,
-              //  image,
-                createdBy,
+                title: req.body.title,
+                instructions: req.body.instructions,
+                prepTime: req.body.prepTime,
+                image: recipeImage.url,
             });
     
             res.status(200).json({
@@ -35,13 +34,15 @@ module.exports = {
                 body: recipe,
             });
         } catch (error) {
-            console.log(error);
+            console.log("Error creating recipe:", error);
             res.status(500).json({ message: "Server error" });
         }
     },
     
+    
     getRecipes: async (req,res) => {
-        try {
+        try {   
+            
             const recipes = await db.find({})
             res.status(200).json({
                 status:200,

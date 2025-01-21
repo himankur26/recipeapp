@@ -1,66 +1,74 @@
-import { useState } from 'react';
-import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function CreateRecipe() {
   const [recipe, setRecipe] = useState({
-    title: '',
-    ingredients: '',
-    instructions: '',
-    prepTime: '',
-    // createdBy: '',
+    title: "",
+    instructions: "",
+    prepTime: "",
+    // createdBy: "",
   });
 
-  //const [image, setImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setRecipe({
-      ...recipe,
-      [name]: value,
-    });
+  // Handle text input changes
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setRecipe({ ...recipe, [name]: value });
   };
 
-  // const handleFileChange = (e) => {
-  //   setImage(e.target.files[0]);
-  // };
+  // Handle file selection
+  const onFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    for (const key in recipe) {
-      formData.append(key, recipe[key]);
-    }
-    // if (image) {
-    //   formData.append('image', image);
-    // }
+  // Handle form submission
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5689/recipes/createRecipe', formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      if (!selectedFile) {
+        alert("Please upload a recipe image.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("title", recipe.title);
+      // formData.append("ingredients", recipe.ingredients);
+      formData.append("instructions", recipe.instructions);
+      formData.append("prepTime", recipe.prepTime);
+      // formData.append("createdBy", recipe.createdBy);
+      formData.append("image", selectedFile); // ✅ Ensure correct field name
+
+      console.log("Submitting form data:", formData); // Debugging
+
+      const response = await fetch("http://localhost:5689/recipes/createRecipe", {
+        method: "POST",
+        body: formData,
       });
 
-      alert('Recipe created successfully!');
-      console.log('Recipe Created:', response.data);
+      const data = await response.json();
+      console.log("Response Data:", data); // Debugging
 
-      // Reset form fields
-      setRecipe({
-        title: '',
-        ingredients: '',
-        instructions: '',
-        prepTime: '',
-        // createdBy: '',
-      });
-     // setImage(null);
+      if (response.ok) {
+        alert("Recipe created successfully!");
+        setRecipe({
+          title: "",
+          // ingredients: "",
+          instructions: "",
+          prepTime: "",
+          // createdBy: "",
+        });
+        setSelectedFile(null);
+      } else {
+        alert(`Failed to create recipe: ${data.message}`);
+      }
     } catch (error) {
-      console.error('Error creating recipe:', error);
-      alert('Failed to create recipe. Please try again.');
+      alert("An error occurred while creating the recipe.");
+      console.error("Error:", error);
     }
   };
-console.log(recipe)
+
   return (
     <div className="container mt-5">
       <h2 className="text-center mb-4">Create Recipe</h2>
@@ -74,9 +82,10 @@ console.log(recipe)
             value={recipe.title}
             onChange={handleChange}
             placeholder="Enter recipe title"
+            required
           />
         </div>
-
+{/* 
         <div className="form-group">
           <label>Ingredients</label>
           <textarea
@@ -85,8 +94,9 @@ console.log(recipe)
             value={recipe.ingredients}
             onChange={handleChange}
             placeholder="Enter ingredients (comma-separated)"
+            required
           />
-        </div>
+        </div> */}
 
         <div className="form-group">
           <label>Instructions</label>
@@ -96,6 +106,7 @@ console.log(recipe)
             value={recipe.instructions}
             onChange={handleChange}
             placeholder="Enter instructions"
+            required
           />
         </div>
 
@@ -108,6 +119,7 @@ console.log(recipe)
             value={recipe.prepTime}
             onChange={handleChange}
             placeholder="Enter preparation time"
+            required
           />
         </div>
 
@@ -119,19 +131,23 @@ console.log(recipe)
             name="createdBy"
             value={recipe.createdBy}
             onChange={handleChange}
-            placeholder="Enter creator's name"
+            placeholder="Enter your name"
+            required
           />
-        </div> */}
+        </div> */}   
 
-        {/* <div className="form-group">
+        
+
+        <div className="form-group">
           <label>Recipe Image</label>
           <input
             type="file"
             className="form-control"
-            onChange={handleFileChange}
+            onChange={onFileChange}
             accept="image/*"
+            required
           />
-        </div> */}
+        </div>
 
         <button type="submit" className="btn btn-primary btn-block">
           Create Recipe

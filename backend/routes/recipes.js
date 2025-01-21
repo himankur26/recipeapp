@@ -4,7 +4,14 @@ const upload = require('../middleware/multer_middleware')
 
 
 var recipeController = require("../controller/recipeController")
-//router.post("/createRecipe", upload.single('image'),recipeController.createRecipe)
+router.post("/createRecipe", 
+    upload.fields([
+        {
+            name:"image",
+            maxCount:1
+        }
+    ])    
+,recipeController.createRecipe)
 router.get('/getRecipes',recipeController.getRecipes)
 router.get('/singleRecipe/:id',recipeController.singleRecipe)
 
