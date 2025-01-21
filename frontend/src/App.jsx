@@ -10,6 +10,7 @@ import Login from './components/login/Login';
 import CreateRecipe from './components/recipe/CreateRecipe';
 import { useAuth } from './store/Auth';
 import Profile from './components/profile/Profile';
+import Contact from './components/contact/Contact';
 
 function App() {
 const {isLoggedIn}  = useAuth()
@@ -20,6 +21,8 @@ const {isLoggedIn}  = useAuth()
         <Route path="/" element={ <Layout/> }>
           <Route index element={<Home/>} /> 
           <Route path="about" element={<AboutUs/>} /> 
+          <Route path="contact" element={<Contact/>} /> 
+
           {/* <Route path="" element={<Products/>} />  */}
           <Route path="signup" element={<Signup/>} /> 
           <Route path="login" element={<Login/>} /> 

@@ -8,8 +8,8 @@ const recipeSchema = new mongoose.Schema({
   },
   ingredients: [
     {
-      name: { type: String, required: true },
-      quantity: { type: String, required: true },
+      // name: { type: String, required: true },
+      // quantity: { type: String, required: true },
     },
   ],
   instructions: {
@@ -20,14 +20,14 @@ const recipeSchema = new mongoose.Schema({
     type: Number, // in minutes
    // required: true,
   },
-  image: {
-    type: String, // URL for an image
-    default: '',
-  },
-  createdBy: {
-    type: mongoose.Schema.ObjectId,
-    ref : "User",
-  },
+  // image: {
+  //   type: String, // URL for an image
+  //   default: '',
+  // },
+  // createdBy: {
+  //   type: mongoose.Schema.ObjectId,
+  //   ref : "User",
+  // },
 });
 
 module.exports = mongoose.model('Recipe', recipeSchema);

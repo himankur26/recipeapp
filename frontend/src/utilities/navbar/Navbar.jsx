@@ -22,6 +22,8 @@ function Header() {
           >
             <Nav.Link as={Link} to="/">Home</Nav.Link>
             <Nav.Link as={Link} to="about">About Us </Nav.Link>
+            <Nav.Link as={Link} to="contact">Contact Us </Nav.Link>
+
             <NavDropdown title="Recipies" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Veg recipies</NavDropdown.Item>
               <NavDropdown.Item href="#action4">

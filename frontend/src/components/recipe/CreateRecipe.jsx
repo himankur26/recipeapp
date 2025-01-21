@@ -11,7 +11,7 @@ function CreateRecipe() {
     // createdBy: '',
   });
 
-  const [image, setImage] = useState(null);
+  //const [image, setImage] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,9 +21,9 @@ function CreateRecipe() {
     });
   };
 
-  const handleFileChange = (e) => {
-    setImage(e.target.files[0]);
-  };
+  // const handleFileChange = (e) => {
+  //   setImage(e.target.files[0]);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,9 +32,9 @@ function CreateRecipe() {
     for (const key in recipe) {
       formData.append(key, recipe[key]);
     }
-    if (image) {
-      formData.append('image', image);
-    }
+    // if (image) {
+    //   formData.append('image', image);
+    // }
 
     try {
       const response = await axios.post('http://localhost:5689/recipes/createRecipe', formData, {
@@ -54,7 +54,7 @@ function CreateRecipe() {
         prepTime: '',
         // createdBy: '',
       });
-      setImage(null);
+     // setImage(null);
     } catch (error) {
       console.error('Error creating recipe:', error);
       alert('Failed to create recipe. Please try again.');
@@ -123,7 +123,7 @@ console.log(recipe)
           />
         </div> */}
 
-        <div className="form-group">
+        {/* <div className="form-group">
           <label>Recipe Image</label>
           <input
             type="file"
@@ -131,7 +131,7 @@ console.log(recipe)
             onChange={handleFileChange}
             accept="image/*"
           />
-        </div>
+        </div> */}
 
         <button type="submit" className="btn btn-primary btn-block">
           Create Recipe

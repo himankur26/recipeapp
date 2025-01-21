@@ -24,7 +24,7 @@ module.exports = {
                 ingredients,
                 instructions,
                 prepTime,
-                image,
+              //  image,
                 createdBy,
             });
     
