@@ -1,5 +1,5 @@
 const db = require("../modal/usermodal")
-const bcrypt = require ('bcrypt')
+const bcrypt = require ('bcryptjs')
 
 module.exports = {
     createUser: async (req,res) =>{
