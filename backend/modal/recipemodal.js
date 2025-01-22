@@ -10,7 +10,7 @@ const recipeSchema = new mongoose.Schema({
   //   {
   //     name: { type: String, required: true },
   //     quantity: { type: String, required: true },
-  //   },
+  // //   },
   // ],
   instructions: {
     type: String,
@@ -24,6 +24,11 @@ const recipeSchema = new mongoose.Schema({
     type: String, // URL for an image
     default: '',
   },
+  category: {
+    type: String, 
+    default: '',
+  enum : ["non-veg","veg","Desert"]
+  }
  
 });
 

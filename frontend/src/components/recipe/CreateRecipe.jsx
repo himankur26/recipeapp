@@ -5,8 +5,9 @@ function CreateRecipe() {
   const [recipe, setRecipe] = useState({
     title: "",
     instructions: "",
+    ingredients: [{ name: "", quantity: "" }],
     prepTime: "",
-    // createdBy: "",
+    category: "",
   });
 
   const [selectedFile, setSelectedFile] = useState(null);
@@ -17,47 +18,82 @@ function CreateRecipe() {
     setRecipe({ ...recipe, [name]: value });
   };
 
+  // // Handle ingredients changes
+  // const handleIngredientChange = (index, event) => {
+  //   const { name, value } = event.target;
+  //   const updatedIngredients = [...recipe.ingredients];
+  //   updatedIngredients[index][name] = value;
+  //   setRecipe({ ...recipe, ingredients: updatedIngredients });
+  // };
+
+  // // Add a new ingredient field
+  // const addIngredient = () => {
+  //   setRecipe({
+  //     ...recipe,
+  //     ingredients: [...recipe.ingredients, { name: "", quantity: "" }],
+  //   });
+  // };
+
+  // // Remove an ingredient field
+  // const removeIngredient = (index) => {
+  //   const updatedIngredients = recipe.ingredients.filter((_, i) => i !== index);
+  //   setRecipe({ ...recipe, ingredients: updatedIngredients });
+  // };
+
   // Handle file selection
   const onFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const file = event.target.files[0];
+    setSelectedFile(file);
+    console.log("Selected file:", file); // Debugging
   };
-
+  
   // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     try {
       if (!selectedFile) {
         alert("Please upload a recipe image.");
         return;
       }
-
+  
       const formData = new FormData();
       formData.append("title", recipe.title);
-      // formData.append("ingredients", recipe.ingredients);
       formData.append("instructions", recipe.instructions);
+      // formData.append(
+      //   "ingredients",
+      //   JSON.stringify(
+      //     recipe.ingredients.split(",").map((ingredient) => ({
+      //       name: ingredient.trim(),
+      //       quantity: "1", // Default quantity
+      //     }))
+      //   )
+      // );
       formData.append("prepTime", recipe.prepTime);
-      // formData.append("createdBy", recipe.createdBy);
-      formData.append("image", selectedFile); // ✅ Ensure correct field name
-
-      console.log("Submitting form data:", formData); // Debugging
-
+      formData.append("category", recipe.category);
+      formData.append("image", selectedFile); // ✅ Appending the file
+  
+      // Debugging: Check FormData entries
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+  
       const response = await fetch("http://localhost:5689/recipes/createRecipe", {
         method: "POST",
         body: formData,
       });
-
+  
       const data = await response.json();
-      console.log("Response Data:", data); // Debugging
-
+      console.log("Response Data:", data);
+  
       if (response.ok) {
         alert("Recipe created successfully!");
         setRecipe({
           title: "",
-          // ingredients: "",
+          ingredients: "",
           instructions: "",
           prepTime: "",
-          // createdBy: "",
+          category: "veg", // Reset to default
         });
         setSelectedFile(null);
       } else {
@@ -68,7 +104,7 @@ function CreateRecipe() {
       console.error("Error:", error);
     }
   };
-
+  
   return (
     <div className="container mt-5">
       <h2 className="text-center mb-4">Create Recipe</h2>
@@ -85,17 +121,41 @@ function CreateRecipe() {
             required
           />
         </div>
-{/* 
-        <div className="form-group">
+
+        {/* <div className="form-group">
           <label>Ingredients</label>
-          <textarea
-            className="form-control"
-            name="ingredients"
-            value={recipe.ingredients}
-            onChange={handleChange}
-            placeholder="Enter ingredients (comma-separated)"
-            required
-          />
+          {recipe.ingredients.map((ingredient, index) => (
+            <div key={index} className="d-flex mb-2">
+              <input
+                type="text"
+                className="form-control me-2"
+                name="name"
+                value={ingredient.name}
+                onChange={(e) => handleIngredientChange(index, e)}
+                placeholder="Ingredient name"
+                required
+              />
+              <input
+                type="text"
+                className="form-control me-2"
+                name="quantity"
+                value={ingredient.quantity}
+                onChange={(e) => handleIngredientChange(index, e)}
+                placeholder="Quantity"
+                required
+              />
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => removeIngredient(index)}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button type="button" className="btn btn-secondary" onClick={addIngredient}>
+            Add Ingredient
+          </button>
         </div> */}
 
         <div className="form-group">
@@ -123,31 +183,33 @@ function CreateRecipe() {
           />
         </div>
 
-        {/* <div className="form-group">
-          <label>Created By</label>
-          <input
-            type="text"
+        <div className="form-group">
+          <label>Category</label>
+          <select
+            name="category"
             className="form-control"
-            name="createdBy"
-            value={recipe.createdBy}
+            value={recipe.category}
             onChange={handleChange}
-            placeholder="Enter your name"
             required
-          />
-        </div> */}   
-
-        
+          >
+            <option value="">Select Category</option>
+            <option value="veg">Vegetarian</option>
+            <option value="nonveg">Non-Vegetarian</option>
+            <option value="Desert">Desert</option>
+          </select>
+        </div>
 
         <div className="form-group">
-          <label>Recipe Image</label>
-          <input
-            type="file"
-            className="form-control"
-            onChange={onFileChange}
-            accept="image/*"
-            required
-          />
-        </div>
+  <label>Recipe Image</label>
+  <input
+    type="file"
+    className="form-control"
+    onChange={onFileChange}
+    accept="image/*"
+    required
+  />
+</div>
+
 
         <button type="submit" className="btn btn-primary btn-block">
           Create Recipe
