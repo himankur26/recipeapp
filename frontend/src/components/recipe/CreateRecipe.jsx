@@ -18,27 +18,27 @@ function CreateRecipe() {
     setRecipe({ ...recipe, [name]: value });
   };
 
-  // // Handle ingredients changes
-  // const handleIngredientChange = (index, event) => {
-  //   const { name, value } = event.target;
-  //   const updatedIngredients = [...recipe.ingredients];
-  //   updatedIngredients[index][name] = value;
-  //   setRecipe({ ...recipe, ingredients: updatedIngredients });
-  // };
+  // Handle ingredients changes
+  const handleIngredientChange = (index, event) => {
+    const { name, value } = event.target;
+    const updatedIngredients = [...recipe.ingredients];
+    updatedIngredients[index][name] = value;
+    setRecipe({ ...recipe, ingredients: updatedIngredients });
+  };
 
-  // // Add a new ingredient field
-  // const addIngredient = () => {
-  //   setRecipe({
-  //     ...recipe,
-  //     ingredients: [...recipe.ingredients, { name: "", quantity: "" }],
-  //   });
-  // };
+  // Add a new ingredient field
+  const addIngredient = () => {
+    setRecipe({
+      ...recipe,
+      ingredients: [...recipe.ingredients, { name: "", quantity: "" }],
+    });
+  };
 
-  // // Remove an ingredient field
-  // const removeIngredient = (index) => {
-  //   const updatedIngredients = recipe.ingredients.filter((_, i) => i !== index);
-  //   setRecipe({ ...recipe, ingredients: updatedIngredients });
-  // };
+  // Remove an ingredient field
+  const removeIngredient = (index) => {
+    const updatedIngredients = recipe.ingredients.filter((_, i) => i !== index);
+    setRecipe({ ...recipe, ingredients: updatedIngredients });
+  };
 
   // Handle file selection
   const onFileChange = (event) => {
@@ -60,15 +60,15 @@ function CreateRecipe() {
       const formData = new FormData();
       formData.append("title", recipe.title);
       formData.append("instructions", recipe.instructions);
-      // formData.append(
-      //   "ingredients",
-      //   JSON.stringify(
-      //     recipe.ingredients.split(",").map((ingredient) => ({
-      //       name: ingredient.trim(),
-      //       quantity: "1", // Default quantity
-      //     }))
-      //   )
-      // );
+      formData.append(
+        "ingredients",
+        JSON.stringify(
+          recipe.ingredients.split(",").map((ingredient) => ({
+            name: ingredient.trim(),
+            quantity: "1", // Default quantity
+          }))
+        )
+      );
       formData.append("prepTime", recipe.prepTime);
       formData.append("category", recipe.category);
       formData.append("image", selectedFile); // ✅ Appending the file
@@ -122,7 +122,7 @@ function CreateRecipe() {
           />
         </div>
 
-        {/* <div className="form-group">
+        <div className="form-group">
           <label>Ingredients</label>
           {recipe.ingredients.map((ingredient, index) => (
             <div key={index} className="d-flex mb-2">
@@ -156,7 +156,7 @@ function CreateRecipe() {
           <button type="button" className="btn btn-secondary" onClick={addIngredient}>
             Add Ingredient
           </button>
-        </div> */}
+        </div>
 
         <div className="form-group">
           <label>Instructions</label>
@@ -194,7 +194,7 @@ function CreateRecipe() {
           >
             <option value="">Select Category</option>
             <option value="veg">Vegetarian</option>
-            <option value="nonveg">Non-Vegetarian</option>
+            <option value="non-veg">Non-Vegetarian</option>
             <option value="Desert">Desert</option>
           </select>
         </div>

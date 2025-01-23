@@ -23,7 +23,7 @@ module.exports = {
             const recipe = await db.create({
                 title: req.body.title,
                 instructions: req.body.instructions,
-               // ingredients: req.body.ingredients,
+                ingredients: req.body.ingredients,
                 prepTime: req.body.prepTime,
                 image: recipeImage.url,
                 category: req.body.category,
