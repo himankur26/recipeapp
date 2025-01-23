@@ -5,7 +5,7 @@ function CreateRecipe() {
   const [recipe, setRecipe] = useState({
     title: "",
     instructions: "",
-    ingredients: [{ name: "", quantity: "" }],
+    ingredients: [{ name: "", quantity: "" }], // ✅ Ensuring ingredients is always an array
     prepTime: "",
     category: "",
   });
@@ -44,56 +44,43 @@ function CreateRecipe() {
   const onFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
-    console.log("Selected file:", file); // Debugging
+    console.log("Selected file:", file);
   };
-  
+
   // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     try {
       if (!selectedFile) {
         alert("Please upload a recipe image.");
         return;
       }
-  
+
       const formData = new FormData();
       formData.append("title", recipe.title);
       formData.append("instructions", recipe.instructions);
-      formData.append(
-        "ingredients",
-        JSON.stringify(
-          recipe.ingredients.split(",").map((ingredient) => ({
-            name: ingredient.trim(),
-            quantity: "1", // Default quantity
-          }))
-        )
-      );
+      formData.append("ingredients", JSON.stringify(recipe.ingredients)); // ✅ Send as JSON
       formData.append("prepTime", recipe.prepTime);
       formData.append("category", recipe.category);
-      formData.append("image", selectedFile); // ✅ Appending the file
-  
-      // Debugging: Check FormData entries
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
-  
+      formData.append("image", selectedFile); // ✅ File Upload
+
       const response = await fetch("http://localhost:5689/recipes/createRecipe", {
         method: "POST",
         body: formData,
       });
-  
+
       const data = await response.json();
       console.log("Response Data:", data);
-  
+
       if (response.ok) {
         alert("Recipe created successfully!");
         setRecipe({
           title: "",
-          ingredients: "",
+          ingredients: [{ name: "", quantity: "" }], // ✅ Reset as an array
           instructions: "",
           prepTime: "",
-          category: "veg", // Reset to default
+          category: "veg",
         });
         setSelectedFile(null);
       } else {
@@ -104,7 +91,7 @@ function CreateRecipe() {
       console.error("Error:", error);
     }
   };
-  
+
   return (
     <div className="container mt-5">
       <h2 className="text-center mb-4">Create Recipe</h2>
@@ -200,16 +187,15 @@ function CreateRecipe() {
         </div>
 
         <div className="form-group">
-  <label>Recipe Image</label>
-  <input
-    type="file"
-    className="form-control"
-    onChange={onFileChange}
-    accept="image/*"
-    required
-  />
-</div>
-
+          <label>Recipe Image</label>
+          <input
+            type="file"
+            className="form-control"
+            onChange={onFileChange}
+            accept="image/*"
+            required
+          />
+        </div>
 
         <button type="submit" className="btn btn-primary btn-block">
           Create Recipe
