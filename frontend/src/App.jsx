@@ -11,6 +11,9 @@ import CreateRecipe from './components/recipe/CreateRecipe';
 import { useAuth } from './store/Auth';
 import Profile from './components/profile/Profile';
 import Contact from './components/contact/Contact';
+import AllRecipes from './components/recipes/AllRecipes';
+import SingleRecipe from './components/recipes/SingleRecipe';
+import RecipesByCategory from './components/recipes/RecipesByCategory';
 
 function App() {
 const {isLoggedIn}  = useAuth()
@@ -27,6 +30,11 @@ const {isLoggedIn}  = useAuth()
           <Route path="signup" element={<Signup/>} /> 
           <Route path="login" element={<Login/>} /> 
           <Route path="createrecipe" element={<CreateRecipe/>} /> 
+          <Route path="getrecipes" element={<AllRecipes/>} /> 
+          <Route path="singlerecipe/:id" element={<SingleRecipe/>} /> 
+          <Route path="recipes/:category" element={<RecipesByCategory/>} /> 
+
+
           <Route path="profile"
            element={isLoggedIn ? <Profile/> : <Navigate to = "/login"/>} /> 
 

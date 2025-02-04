@@ -7,6 +7,13 @@ function Profile() {
 const {user} = useAuth()
 const userdata = user?.userData
 console.log(userdata,"aaaaaa")
+ const handleLogout= ()=>{
+    localStorage.removeItem("token")
+    alert("you are logout")
+    window.location.href = '/login'; // Redirect to dashboard or another page
+
+
+}
   return (
     <div className="container-fluid">
     <div className="container my-5">
@@ -42,8 +49,9 @@ console.log(userdata,"aaaaaa")
                             </Card.Text>
                         </div>
                     </div>
-                    <div className="d-flex my-3 mt-4 justify-content-center ">
+                    <div className="d-flex gap-3 my-3 mt-4 justify-content-center ">
                     <Button variant="outlined">Edit Details</Button>
+                    <Button variant="contained" onClick={handleLogout}>Log Out</Button>
                     </div>
                 </Card.Body>
             </Card>

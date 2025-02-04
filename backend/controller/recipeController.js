@@ -84,4 +84,47 @@ module.exports = {
       res.status(500).json({ message: "Server error" });
     }
   },
+
+
+category: async (req,res) => {
+  try {
+    const {category} = req.params
+    const recipes = await db.find({category})
+    if (!recipes) {
+      return res.status(400).json({message:"no recipe found"})
+    }
+    res.status(200).json({
+      success:true ,
+      message: "Recipe fetched",
+      body: recipes,
+    });
+  } catch (error) {
+    console.log(error)
+  }
+}
 };
+
+search: async (req, res) => {
+    try {
+      const { title } = req.query; // Extract title from query params
+      if (!title) {
+        return res.status(400).json({ message: "Search term is required" });
+      }
+
+      // Perform case-insensitive partial match search
+      const recipes = await db.find({ title: { $regex: title, $options: "i" } });
+
+      if (!recipes || recipes.length === 0) {
+        return res.status(404).json({ message: "No matching recipes found" });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Recipe(s) found",
+        body: recipes,
+      });
+    } catch (error) {
+      console.log("Error searching for recipe:", error);
+      res.status(500).json({ message: "Server error" });
+    }
+  };

@@ -14,6 +14,8 @@ router.post("/createRecipe",
 ,recipeController.createRecipe)
 router.get('/getRecipes',recipeController.getRecipes)
 router.get('/singleRecipe/:id',recipeController.singleRecipe)
+router.get('/category/:category',recipeController.category)
+router.get("/search", recipeController.search);
 
 
 module.exports = router;
